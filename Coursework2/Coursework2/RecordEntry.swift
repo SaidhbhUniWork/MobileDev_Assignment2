@@ -44,5 +44,5 @@ class NewRecord{
     }
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    //static let
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("RecordEntries")
 }
