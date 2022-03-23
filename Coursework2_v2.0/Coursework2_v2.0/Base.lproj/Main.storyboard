@@ -182,11 +182,15 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Receipt" translatesAutoresizingMaskIntoConstraints="NO" id="y4p-zK-CKq">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Receipt" translatesAutoresizingMaskIntoConstraints="NO" id="y4p-zK-CKq">
                                 <rect key="frame" x="188" y="436" width="140" height="128"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="yhU-ZV-r3X"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="nDX-kT-ed3" appends="YES" id="ZKz-Ai-qcO"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYP-I5-fwT">
                                 <rect key="frame" x="286" y="777" width="35" height="21"/>
@@ -292,7 +296,7 @@
                         <outlet property="isPaidSwitch" destination="7zO-c2-mqZ" id="hRs-BW-bcn"/>
                         <outlet property="paidDate" destination="EHJ-7F-bWp" id="K30-qd-Pvh"/>
                         <outlet property="receiptImage" destination="y4p-zK-CKq" id="Xhi-mA-D0K"/>
-                        <outlet property="receiptSwitch" destination="C4K-fr-HSO" id="gfx-1E-HnV"/>
+                        <outlet property="receiptSwitch" destination="C4K-fr-HSO" id="Nv3-xp-Lof"/>
                         <outlet property="saveButton" destination="YAx-3R-8My" id="Q9Y-qt-haD"/>
                         <outlet property="totalPriceTextField" destination="f9v-Ir-uMj" id="fUw-hR-4Xw"/>
                         <outlet property="vatSwitch" destination="7v1-c8-cLB" id="I77-dB-NDi"/>
@@ -300,6 +304,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
                 <exit id="6Vw-rR-TRu" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="nDX-kT-ed3">
+                    <connections>
+                        <action selector="selectImageFromPhotoLibrary:" destination="BYZ-38-t0r" id="GZE-GW-Xi6"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1952.1739130434785" y="115.84821428571428"/>
         </scene>
