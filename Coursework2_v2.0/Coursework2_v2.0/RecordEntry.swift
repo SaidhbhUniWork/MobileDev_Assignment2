@@ -18,6 +18,7 @@ class NewRecord:NSObject, NSCoding{
         coder.encode(totalAmount, forKey: PropertyKey.totalAmount)
         coder.encode(isPaid, forKey: PropertyKey.isPaid)
         coder.encode(inclVAT, forKey: PropertyKey.inclVAT)
+        coder.encode(receiptSwitch, forKey: PropertyKey.receiptSwitch)
     }
     
     required convenience init?(coder: NSCoder) {
@@ -53,24 +54,29 @@ class NewRecord:NSObject, NSCoding{
             print("Unable to decode")
             return nil
         }
+        guard let receiptSwitch = coder.decodeObject(forKey: PropertyKey.receiptSwitch) as? Bool else{
+            print("Unable to decode")
+            return nil
+        }
         let receiptPhoto = coder.decodeObject(forKey: PropertyKey.receiptPhoto) as? UIImage
         
-        self.init(empName:empName, dateAdded:dateAdded, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT)
+        self.init(empName:empName, dateAdded:dateAdded, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
         
     }
     
     var empName: String
     var dateAdded: Date
     var dateIncurred: Date
-    var datePaid: Date?
+    var datePaid: Date
     var receiptPhoto: UIImage? // optional
     var expenseDetails: String
     var totalAmount: Double
     var isPaid: Bool?
     var inclVAT: Bool?
+    var receiptSwitch: Bool?
     
     //constructor
-    init?(empName: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: Double, isPaid: Bool, inclVAT: Bool){
+    init?(empName: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: Double, isPaid: Bool, inclVAT: Bool, receiptSwitch: Bool){
         if(empName.isEmpty || expenseDetails.isEmpty || totalAmount.isZero){
             return nil
         }
@@ -84,6 +90,7 @@ class NewRecord:NSObject, NSCoding{
         self.totalAmount = totalAmount
         self.isPaid = isPaid
         self.inclVAT = inclVAT
+        self.receiptSwitch = receiptSwitch
     }
     struct PropertyKey{
         static let empName = "Name"
@@ -95,6 +102,7 @@ class NewRecord:NSObject, NSCoding{
         static let totalAmount = "TotalAmount"
         static let isPaid = "IsPaid"
         static let inclVAT = "InclVAT"
+        static let receiptSwitch = "ReceiptSwitch"
     }
     
     static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!

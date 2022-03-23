@@ -81,15 +81,29 @@ class RecordTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
+        super.prepare(for: segue, sender: sender)        // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        switch(segue.identifier ?? ""){
+            case "viewRecord":
+                guard let recordViewController = segue.destination as? ViewController else{
+                    break;
+                }
+                guard let indexPath = tableView.indexPathForSelectedRow else{
+                    break;
+                }
+                let selectedRecord = recordsArray[indexPath.row]
+                recordViewController.record = selectedRecord
+                break
+            default:
+                break;
+        }
     }
-    */
+    
     
     @IBAction func unwindToRecords(sender:UIStoryboardSegue){
         if let sourceViewController = sender.source as? ViewController, let record = sourceViewController.record{

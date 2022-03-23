@@ -15,7 +15,7 @@ extension String{
 class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     var record:NewRecord?
-    
+    let dateFormatter = DateFormatter()
     
     @IBOutlet weak var employeeNameTextField: UITextField!
     @IBOutlet weak var currentDate: UIDatePicker!
@@ -55,6 +55,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         // adds a new gesture recogsiser to the view
         view.addGestureRecognizer(screenTap)
         // Do any additional setup after loading the view.
+        
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.setLocalizedDateFormatFromTemplate("")
+        
+        if let record = record{
+            employeeNameTextField.text = record.empName
+            currentDate.date = record.dateAdded
+            expenseDate.date = record.dateIncurred
+            receiptSwitch.isOn = record.receiptSwitch ?? false
+            receiptImage.image = record.receiptPhoto
+            expenseDetailsTextField.text = record.expenseDetails
+            //totalPriceTextField.text?.toDouble() = record.totalAmount
+            vatSwitch.isOn = record.inclVAT ?? true
+            isPaidSwitch.isOn = record.isPaid ?? false
+            paidDate.date = record.datePaid
+            
+        }
     }
     // function is called when a tap gesture is recognised
     @objc func dismissKeyboard() {
@@ -76,9 +93,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         let totalAmount = total_asString.toDouble() ?? 0.0
         let isPaid = isPaidSwitch.isOn
         let inclVAT = vatSwitch.isOn
+        let receiptSwitch = receiptSwitch.isOn
         let empName = employeeNameTextField.text ?? ""
         
-        record = NewRecord(empName: empName, dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT)
+        record = NewRecord(empName: empName, dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -105,11 +123,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         }*/
         
     }
-    
-    //func switchValueChanged(mySwitch: UISwitch){
-     //   if !mySwitch.isOn
-    //}
-
 }
 
 
