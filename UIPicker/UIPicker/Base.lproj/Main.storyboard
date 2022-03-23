@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="UIPicker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <datePicker contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="KoE-li-b66">
+                                <rect key="frame" x="20" y="54" width="374" height="216"/>
+                                <connections>
+                                    <action selector="dateSet:" destination="BYZ-38-t0r" eventType="valueChanged" id="YDC-ek-0gN"/>
+                                </connections>
+                            </datePicker>
+                            <pickerView contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="haT-e0-tsB">
+                                <rect key="frame" x="20" y="320" width="374" height="216"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="025-6M-4g8"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="osw-r2-arV"/>
+                                </connections>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tYv-gc-fCi">
+                                <rect key="frame" x="20" y="546" width="374" height="30"/>
+                                <state key="normal" title="Get Picker Value"/>
+                                <connections>
+                                    <action selector="getPickerValueButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="76R-VF-A4x"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZXR-RN-fka">
+                                <rect key="frame" x="20" y="280" width="374" height="30"/>
+                                <state key="normal" title="Get Date"/>
+                                <connections>
+                                    <action selector="getDateButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tn8-cG-suU"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KoE-li-b66" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5cs-Mb-pke"/>
+                            <constraint firstItem="tYv-gc-fCi" firstAttribute="top" secondItem="haT-e0-tsB" secondAttribute="bottom" constant="10" id="Dzr-k8-YlZ"/>
+                            <constraint firstItem="ZXR-RN-fka" firstAttribute="top" secondItem="KoE-li-b66" secondAttribute="bottom" constant="10" id="HXI-HR-ETa"/>
+                            <constraint firstItem="KoE-li-b66" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="M78-AQ-6Fm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tYv-gc-fCi" secondAttribute="trailing" constant="20" id="Ph1-V3-JBp"/>
+                            <constraint firstItem="haT-e0-tsB" firstAttribute="top" secondItem="ZXR-RN-fka" secondAttribute="bottom" constant="10" id="UaB-J0-lZY"/>
+                            <constraint firstItem="KoE-li-b66" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Wa1-CR-VqV"/>
+                            <constraint firstItem="haT-e0-tsB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="d3x-hH-2ir"/>
+                            <constraint firstItem="haT-e0-tsB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="lAL-9c-3wK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KoE-li-b66" secondAttribute="trailing" constant="20" id="o2L-hM-gp2"/>
+                            <constraint firstItem="tYv-gc-fCi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="pLj-BX-mZK"/>
+                            <constraint firstItem="ZXR-RN-fka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rCt-bq-BR0"/>
+                            <constraint firstItem="ZXR-RN-fka" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="s7k-Q7-aIY"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZXR-RN-fka" secondAttribute="trailing" constant="20" id="ugE-qn-OwB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="haT-e0-tsB" secondAttribute="trailing" constant="20" id="vOa-v0-0V0"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="datePicker" destination="KoE-li-b66" id="Fok-wC-S1R"/>
+                        <outlet property="letterPicker" destination="haT-e0-tsB" id="W24-Vh-KM9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="116"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
