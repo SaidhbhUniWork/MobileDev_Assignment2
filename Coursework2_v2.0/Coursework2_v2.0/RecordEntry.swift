@@ -62,12 +62,12 @@ class NewRecord:NSObject, NSCoding{
     var empName: String
     var dateAdded: Date
     var dateIncurred: Date
-    var datePaid: Date
+    var datePaid: Date?
     var receiptPhoto: UIImage? // optional
     var expenseDetails: String
     var totalAmount: Double
-    var isPaid: Bool
-    var inclVAT: Bool
+    var isPaid: Bool?
+    var inclVAT: Bool?
     
     //constructor
     init?(empName: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: Double, isPaid: Bool, inclVAT: Bool){

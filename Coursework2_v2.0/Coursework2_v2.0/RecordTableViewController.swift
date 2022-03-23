@@ -90,5 +90,14 @@ class RecordTableViewController: UITableViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    @IBAction func unwindToRecords(sender:UIStoryboardSegue){
+        if let sourceViewController = sender.source as? ViewController, let record = sourceViewController.record{
+            
+            recordsArray.append(record)
+            let newIndexPath = IndexPath(row:recordsArray.count-1, section:0)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+    }
 
 }
