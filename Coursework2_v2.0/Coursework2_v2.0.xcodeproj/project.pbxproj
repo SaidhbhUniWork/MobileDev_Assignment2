@@ -15,6 +15,8 @@
 		5504D9EF27E90C8300F9D976 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5504D9ED27E90C8300F9D976 /* LaunchScreen.storyboard */; };
 		5504D9FA27E90C8300F9D976 /* Coursework2_v2_0Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5504D9F927E90C8300F9D976 /* Coursework2_v2_0Tests.swift */; };
 		5504DA0527E90C8300F9D976 /* Coursework2_v2_0UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5504DA0427E90C8300F9D976 /* Coursework2_v2_0UITests.swift */; };
+		5504DA1327E90ED600F9D976 /* RecordEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5504DA1227E90ED600F9D976 /* RecordEntry.swift */; };
+		550B845527EA41AC00B7F924 /* RecordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550B845427EA41AC00B7F924 /* RecordTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		5504DA0027E90C8300F9D976 /* Coursework2_v2.0UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Coursework2_v2.0UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5504DA0427E90C8300F9D976 /* Coursework2_v2_0UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coursework2_v2_0UITests.swift; sourceTree = "<group>"; };
 		5504DA0627E90C8300F9D976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5504DA1227E90ED600F9D976 /* RecordEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecordEntry.swift; path = /Users/30007730/Documents/MyDocs/MobileDev_Assignment2/Coursework2_v2.0/Coursework2_v2.0/RecordEntry.swift; sourceTree = "<absolute>"; };
+		550B845427EA41AC00B7F924 /* RecordTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +106,9 @@
 				5504D9E227E90C8200F9D976 /* AppDelegate.swift */,
 				5504D9E427E90C8200F9D976 /* SceneDelegate.swift */,
 				5504D9E627E90C8200F9D976 /* ViewController.swift */,
+				5504DA1227E90ED600F9D976 /* RecordEntry.swift */,
 				5504D9E827E90C8200F9D976 /* Main.storyboard */,
+				550B845427EA41AC00B7F924 /* RecordTableViewController.swift */,
 				5504D9EB27E90C8300F9D976 /* Assets.xcassets */,
 				5504D9ED27E90C8300F9D976 /* LaunchScreen.storyboard */,
 				5504D9F027E90C8300F9D976 /* Info.plist */,
@@ -259,8 +265,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5504D9E727E90C8200F9D976 /* ViewController.swift in Sources */,
+				5504DA1327E90ED600F9D976 /* RecordEntry.swift in Sources */,
 				5504D9E327E90C8200F9D976 /* AppDelegate.swift in Sources */,
 				5504D9E527E90C8200F9D976 /* SceneDelegate.swift in Sources */,
+				550B845527EA41AC00B7F924 /* RecordTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
