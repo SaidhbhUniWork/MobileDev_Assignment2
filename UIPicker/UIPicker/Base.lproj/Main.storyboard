@@ -23,14 +23,18 @@
                                 </connections>
                             </datePicker>
                             <pickerView contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="haT-e0-tsB">
-                                <rect key="frame" x="20" y="320" width="374" height="216"/>
+                                <rect key="frame" x="107" y="320" width="200" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="200" id="om0-jh-a57"/>
+                                    <constraint firstAttribute="height" constant="50" id="xhS-CF-YKn"/>
+                                </constraints>
                                 <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="025-6M-4g8"/>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="964-Mj-IeX"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="osw-r2-arV"/>
                                 </connections>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tYv-gc-fCi">
-                                <rect key="frame" x="20" y="546" width="374" height="30"/>
+                                <rect key="frame" x="20" y="380" width="374" height="30"/>
                                 <state key="normal" title="Get Picker Value"/>
                                 <connections>
                                     <action selector="getPickerValueButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="76R-VF-A4x"/>
@@ -47,21 +51,19 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="KoE-li-b66" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="2C4-xA-e7y"/>
                             <constraint firstItem="KoE-li-b66" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5cs-Mb-pke"/>
                             <constraint firstItem="tYv-gc-fCi" firstAttribute="top" secondItem="haT-e0-tsB" secondAttribute="bottom" constant="10" id="Dzr-k8-YlZ"/>
                             <constraint firstItem="ZXR-RN-fka" firstAttribute="top" secondItem="KoE-li-b66" secondAttribute="bottom" constant="10" id="HXI-HR-ETa"/>
                             <constraint firstItem="KoE-li-b66" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="M78-AQ-6Fm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="tYv-gc-fCi" secondAttribute="trailing" constant="20" id="Ph1-V3-JBp"/>
                             <constraint firstItem="haT-e0-tsB" firstAttribute="top" secondItem="ZXR-RN-fka" secondAttribute="bottom" constant="10" id="UaB-J0-lZY"/>
-                            <constraint firstItem="KoE-li-b66" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="Wa1-CR-VqV"/>
                             <constraint firstItem="haT-e0-tsB" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="d3x-hH-2ir"/>
-                            <constraint firstItem="haT-e0-tsB" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="lAL-9c-3wK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KoE-li-b66" secondAttribute="trailing" constant="20" id="o2L-hM-gp2"/>
                             <constraint firstItem="tYv-gc-fCi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="pLj-BX-mZK"/>
                             <constraint firstItem="ZXR-RN-fka" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rCt-bq-BR0"/>
                             <constraint firstItem="ZXR-RN-fka" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="s7k-Q7-aIY"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ZXR-RN-fka" secondAttribute="trailing" constant="20" id="ugE-qn-OwB"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="haT-e0-tsB" secondAttribute="trailing" constant="20" id="vOa-v0-0V0"/>
                         </constraints>
                     </view>
                     <connections>

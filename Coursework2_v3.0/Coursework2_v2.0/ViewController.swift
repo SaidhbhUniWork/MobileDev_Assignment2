@@ -12,12 +12,17 @@ extension String{
         return NumberFormatter().number(from: self)?.doubleValue
     }
 }
-class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+
+    
 
     var record:NewRecord?
+    var pickerValue: String?
     let dateFormatter = DateFormatter()
+    let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Other"]
     
-    @IBOutlet weak var employeeNameTextField: UITextField!
+    //@IBOutlet weak var employeeNameTextField: UITextField!
+    @IBOutlet weak var expenseTypePicker: UIPickerView!
     @IBOutlet weak var currentDate: UIDatePicker!
     @IBOutlet weak var expenseDate: UIDatePicker!
     @IBOutlet weak var receiptSwitch: UISwitch!
@@ -44,12 +49,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     }
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         // hides the keyboard from view
-        employeeNameTextField.resignFirstResponder()
+        expenseDetailsTextField.resignFirstResponder()
         // launches the UIImagePicker controller to select a photo from the library
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion:nil)
+    }
+    @IBAction func getPickerValue(_ sender:UIPickerView){
+        let pickerIndex = expenseTypePicker.selectedRow(inComponent: 0)
+        pickerValue = pickerDataSource[pickerIndex]
+        print(pickerIndex)
+        print(pickerValue)
     }
     
     override func viewDidLoad() {
@@ -67,7 +78,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         dateFormatter.setLocalizedDateFormatFromTemplate("")
         
         if let record = record{
-            employeeNameTextField.text = record.empName
+            //employeeNameTextField.text = record.empName
+            
             currentDate.date = record.dateAdded
             expenseDate.date = record.dateIncurred
             receiptSwitch.isOn = record.receiptSwitch ?? false
@@ -91,6 +103,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             return;
         }
         
+        let expenseType = pickerValue ?? ""
         let dateAdded = currentDate.date
         let dateIncurred = expenseDate.date
         let datePaid = paidDate.date
@@ -101,9 +114,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         let isPaid = isPaidSwitch.isOn
         let inclVAT = vatSwitch.isOn
         let receiptSwitch = receiptSwitch.isOn
-        let empName = employeeNameTextField.text ?? ""
+        //let empName = employeeNameTextField.text ?? ""
         
-        record = NewRecord(empName: empName, dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
+        record = NewRecord(expenseType: expenseType,dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
+    }
+    
+    // UIPicker Datasource functions
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerDataSource.count
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

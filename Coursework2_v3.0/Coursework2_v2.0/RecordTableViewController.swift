@@ -40,7 +40,7 @@ class RecordTableViewController: UITableViewController {
 
         // Configure the cell...
         
-        cell.textLabel?.text = recordsArray[indexPath.row].empName
+        cell.textLabel?.text = recordsArray[indexPath.row].expenseType
 
         return cell
     }

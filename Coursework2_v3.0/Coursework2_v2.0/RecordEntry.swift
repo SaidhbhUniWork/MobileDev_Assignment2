@@ -9,7 +9,8 @@ import UIKit
 
 class NewRecord:NSObject, NSCoding{
     func encode(with coder: NSCoder) {
-        coder.encode(empName, forKey: PropertyKey.empName)
+        //coder.encode(empName, forKey: PropertyKey.empName)
+        coder.encode(expenseType, forKey: PropertyKey.expenseType)
         coder.encode(dateAdded, forKey: PropertyKey.dateAdded)
         coder.encode(dateIncurred, forKey: PropertyKey.dateIncurred)
         coder.encode(datePaid, forKey: PropertyKey.datePaid)
@@ -22,7 +23,11 @@ class NewRecord:NSObject, NSCoding{
     }
     
     required convenience init?(coder: NSCoder) {
-        guard let empName = coder.decodeObject(forKey: PropertyKey.empName) as? String else{
+        /*guard let empName = coder.decodeObject(forKey: PropertyKey.empName) as? String else{
+            print("Unable to decode")
+            return nil
+        }*/
+        guard let expenseType = coder.decodeObject(forKey: PropertyKey.expenseType) as? String else{
             print("Unable to decode")
             return nil
         }
@@ -60,11 +65,12 @@ class NewRecord:NSObject, NSCoding{
         }
         let receiptPhoto = coder.decodeObject(forKey: PropertyKey.receiptPhoto) as? UIImage
         
-        self.init(empName:empName, dateAdded:dateAdded, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
+        self.init(expenseType:expenseType, dateAdded:dateAdded, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
         
     }
     
-    var empName: String
+    //var empName: String
+    var expenseType: String
     var dateAdded: Date
     var dateIncurred: Date
     var datePaid: Date
@@ -76,12 +82,13 @@ class NewRecord:NSObject, NSCoding{
     var receiptSwitch: Bool?
     
     //constructor
-    init?(empName: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: String, isPaid: Bool, inclVAT: Bool, receiptSwitch: Bool){
-        if(empName.isEmpty || expenseDetails.isEmpty || totalAmount.isEmpty){
+    init?(expenseType: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: String, isPaid: Bool, inclVAT: Bool, receiptSwitch: Bool){
+        if(expenseDetails.isEmpty || totalAmount.isEmpty){
             return nil
         }
         
-        self.empName = empName
+        //self.empName = empName
+        self.expenseType = expenseType
         self.dateAdded = dateAdded
         self.dateIncurred = dateIncurred
         self.datePaid = datePaid
@@ -93,7 +100,8 @@ class NewRecord:NSObject, NSCoding{
         self.receiptSwitch = receiptSwitch
     }
     struct PropertyKey{
-        static let empName = "Name"
+        //static let empName = "Name"
+        static let expenseType = "ExpenseType"
         static let dateAdded = "DateAdded"
         static let dateIncurred = "DateIncurred"
         static let datePaid = "DatePaid"
