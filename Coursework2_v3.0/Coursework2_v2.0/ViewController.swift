@@ -17,7 +17,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     
 
     var record:NewRecord?
-    var pickerValue: String?
+    var pickerValue: Int?
     let dateFormatter = DateFormatter()
     let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Other"]
     
@@ -57,11 +57,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         present(imagePickerController, animated: true, completion:nil)
     }
     @IBAction func getPickerValue(_ sender:UIPickerView){
-        let pickerIndex = expenseTypePicker.selectedRow(inComponent: 0)
-        pickerValue = pickerDataSource[pickerIndex]
-        print(pickerIndex)
-        print(pickerValue)
+        //let pickerIndex = expenseTypePicker.selectedRow(inComponent: 0)
+        //pickerValue = pickerDataSource[pickerIndex]
+        
+        
     }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerDataSource[row]
+    }
+    
+    /*func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        //pickerValue = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
+        //pickerValue = expenseTypePicker.selectedRow(inComponent: 0)
+    }*/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,8 +88,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         dateFormatter.setLocalizedDateFormatFromTemplate("")
         
         if let record = record{
-            //employeeNameTextField.text = record.empName
-            
+            expenseTypePicker.selectRow(record.expenseType, inComponent: 0, animated: true)
             currentDate.date = record.dateAdded
             expenseDate.date = record.dateIncurred
             receiptSwitch.isOn = record.receiptSwitch ?? false
@@ -103,7 +112,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             return;
         }
         
-        let expenseType = pickerValue ?? ""
+        let expenseType = expenseTypePicker.selectedRow(inComponent: 0)
+        let expenseTypeString = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
         let dateAdded = currentDate.date
         let dateIncurred = expenseDate.date
         let datePaid = paidDate.date
@@ -114,9 +124,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         let isPaid = isPaidSwitch.isOn
         let inclVAT = vatSwitch.isOn
         let receiptSwitch = receiptSwitch.isOn
-        //let empName = employeeNameTextField.text ?? ""
-        
-        record = NewRecord(expenseType: expenseType,dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
+                
+        record = NewRecord(expenseType: expenseType, expenseTypeString: expenseTypeString, dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
     }
     
     // UIPicker Datasource functions
@@ -133,24 +142,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        //if receiptSwitch.isOn {
-            guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else{
-                print("Error loading image, dismissing image picker")
-                dismiss(animated: true, completion: nil)
-                return
-            }
-            // show the selected image
-            receiptImage.image = selectedImage
-            dismiss(animated: true, completion: nil)
-            
-        /*}
-        else{
-            let alert = UIAlertController(title: "No Photo Enabled", message: "If you wish to upload a photo turn on 'Have Photo'", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-            self.present(alert, animated: true)
-        }*/
         
+        guard let selectedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else{
+            print("Error loading image, dismissing image picker")
+            dismiss(animated: true, completion: nil)
+            return
+        }
+        // show the selected image
+        receiptImage.image = selectedImage
+        dismiss(animated: true, completion: nil)
+         
     }
 }
 
