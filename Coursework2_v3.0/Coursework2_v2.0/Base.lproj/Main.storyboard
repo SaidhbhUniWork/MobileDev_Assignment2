@@ -131,8 +131,11 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C4K-fr-HSO">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C4K-fr-HSO">
                                 <rect key="frame" x="219" y="407" width="51" height="31"/>
+                                <connections>
+                                    <action selector="recieptSwitchToggleAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="oDp-67-r6d"/>
+                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add receipt image" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXH-Lv-Y6F">
                                 <rect key="frame" x="20" y="464" width="145" height="21"/>
@@ -160,6 +163,9 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7v1-c8-cLB">
                                 <rect key="frame" x="338.5" y="748" width="51" height="31"/>
+                                <connections>
+                                    <action selector="vatSwitchToggleAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="qr6-7B-0Jh"/>
+                                </connections>
                             </switch>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Ygb-Pe-PnD">
                                 <rect key="frame" x="20" y="702" width="300" height="34"/>
@@ -193,7 +199,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7zO-c2-mqZ">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7zO-c2-mqZ">
                                 <rect key="frame" x="341" y="809" width="51" height="31"/>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Paid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaC-fn-m46">
@@ -295,11 +301,13 @@
                     </navigationItem>
                     <connections>
                         <outlet property="currentDate" destination="VBq-S0-zcH" id="sxG-7y-YOQ"/>
+                        <outlet property="datePaidLabel" destination="SaC-fn-m46" id="OoP-jQ-vZs"/>
                         <outlet property="expenseDate" destination="5WB-1g-KaD" id="QnS-u7-h5U"/>
                         <outlet property="expenseDetailsTextField" destination="Ygb-Pe-PnD" id="5jP-mD-Y65"/>
                         <outlet property="expenseTypePicker" destination="knA-40-Kr2" id="J5Q-mS-NAe"/>
                         <outlet property="isPaidSwitch" destination="7zO-c2-mqZ" id="hRs-BW-bcn"/>
                         <outlet property="paidDate" destination="EHJ-7F-bWp" id="K30-qd-Pvh"/>
+                        <outlet property="paidSwitchLabel" destination="lYP-I5-fwT" id="VcI-VC-4uO"/>
                         <outlet property="receiptImage" destination="y4p-zK-CKq" id="Xhi-mA-D0K"/>
                         <outlet property="receiptSwitch" destination="C4K-fr-HSO" id="Nv3-xp-Lof"/>
                         <outlet property="saveButton" destination="YAx-3R-8My" id="Q9Y-qt-haD"/>

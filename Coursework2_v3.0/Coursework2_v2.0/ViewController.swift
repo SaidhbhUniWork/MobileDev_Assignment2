@@ -12,6 +12,11 @@ extension String{
         return NumberFormatter().number(from: self)?.doubleValue
     }
 }
+extension Double{
+    func toString() -> String?{
+        return String(format: "%.1f", self)
+    }
+}
 class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     
@@ -32,6 +37,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     @IBOutlet weak var vatSwitch: UISwitch!
     @IBOutlet weak var isPaidSwitch: UISwitch!
     @IBOutlet weak var paidDate: UIDatePicker!
+    @IBOutlet weak var datePaidLabel: UILabel!
+    @IBOutlet weak var paidSwitchLabel: UILabel!
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
@@ -59,12 +66,55 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     @IBAction func getPickerValue(_ sender:UIPickerView){
         //let pickerIndex = expenseTypePicker.selectedRow(inComponent: 0)
         //pickerValue = pickerDataSource[pickerIndex]
-        
-        
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerDataSource[row]
+    }
+    @IBAction func recieptSwitchToggleAction(_ sender: UISwitch) {
+        if sender.isOn == false{
+            receiptImage.isHidden = true
+        } else{
+            receiptImage.isHidden = false
+        }
+    }
+    @IBAction func vatSwitchToggleAction(_ sender: UISwitch) {
+        let isPresentingInAddContactMode = presentingViewController is UINavigationController
+        let VATpercentInc = 1.2
+        let VATpercentDec = 0.2
+        let totalAmountAsDouble = totalPriceTextField.text?.toDouble()
+        let totalInclVAT = totalAmountAsDouble!*VATpercentInc
+        let totalExclVAT = totalAmountAsDouble!*VATpercentDec
+        
+        if !isPresentingInAddContactMode{
+            if vatSwitch.isOn == true{ // amount shown already includes vat
+                /*if sender.isOn == false{
+                    totalPriceTextField.text = totalExclVAT.toString()
+                    //totalExclVAT = totalAmountAsDouble!/VATpercentCalc
+                }*/
+                if sender.isOn == true{
+                    totalPriceTextField.text = totalInclVAT.toString()
+                    //totalInclVAT = totalAmountAsDouble!*VATpercentCalc
+                } else{
+                    totalPriceTextField.text = totalExclVAT.toString()                }
+            if vatSwitch.isOn == false{ // amount shown does not include vat
+                if sender.isOn == true{
+                    totalPriceTextField.text = totalExclVAT.toString()
+                    //totalExclVAT = totalAmountAsDouble!/VATpercentCalc
+                } else{
+                    totalPriceTextField.text = totalInclVAT.toString()
+                    
+                }
+                /*if sender.isOn == false{
+                    totalPriceTextField.text = totalInclVAT.toString()
+                    //totalInclVAT = totalAmountAsDouble!*VATpercentCalc
+                }*/
+                
+            }
+            
+           
+            }
+        }
     }
     
     /*func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -75,6 +125,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        receiptSwitch .setOn(false, animated: true)
+        isPaidSwitch .setOn(false, animated: true)
+        
+        let isPresentingInAddContactMode = presentingViewController is UINavigationController
+        if isPresentingInAddContactMode{
+            isPaidSwitch.isEnabled = false
+            paidDate.isEnabled = false
+            datePaidLabel.isEnabled = false
+            paidSwitchLabel.isEnabled = false
+            receiptImage.isHidden = true
+            
+        } else{
+            isPaidSwitch.isEnabled = true
+            paidDate.isEnabled = true
+            datePaidLabel.isEnabled = true
+            paidSwitchLabel.isEnabled = true
+        }
         
         // allows the user keyboard to be dismissed when not in use
         let screenTap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
