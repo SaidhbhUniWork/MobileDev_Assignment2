@@ -17,11 +17,13 @@ extension Double{
         return String(format: "%.1f", self)
     }
 }
+
 class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     
 
     var record:NewRecord?
+    var hasPhotoBeenChosen: Bool? = false
     var pickerValue: Int?
     let dateFormatter = DateFormatter()
     let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Other"]
@@ -79,40 +81,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         }
     }
     @IBAction func vatSwitchToggleAction(_ sender: UISwitch) {
-        let isPresentingInAddContactMode = presentingViewController is UINavigationController
-        let VATpercentInc = 1.2
-        let VATpercentDec = 0.2
-        let totalAmountAsDouble = totalPriceTextField.text?.toDouble()
-        let totalInclVAT = totalAmountAsDouble!*VATpercentInc
-        let totalExclVAT = totalAmountAsDouble!*VATpercentDec
         
+        let isPresentingInAddContactMode = presentingViewController is UINavigationController
+        let VATpercent = 1.2
+        var totalAmountAsDouble = totalPriceTextField.text?.toDouble()
+        var totalInclVAT = (totalAmountAsDouble ?? 0.0)*VATpercent
+        var totalExclVAT = (totalAmountAsDouble ?? 0.0)/VATpercent
         if !isPresentingInAddContactMode{
-            if vatSwitch.isOn == true{ // amount shown already includes vat
-                /*if sender.isOn == false{
-                    totalPriceTextField.text = totalExclVAT.toString()
-                    //totalExclVAT = totalAmountAsDouble!/VATpercentCalc
-                }*/
-                if sender.isOn == true{
-                    totalPriceTextField.text = totalInclVAT.toString()
-                    //totalInclVAT = totalAmountAsDouble!*VATpercentCalc
-                } else{
-                    totalPriceTextField.text = totalExclVAT.toString()                }
-            if vatSwitch.isOn == false{ // amount shown does not include vat
-                if sender.isOn == true{
-                    totalPriceTextField.text = totalExclVAT.toString()
-                    //totalExclVAT = totalAmountAsDouble!/VATpercentCalc
-                } else{
-                    totalPriceTextField.text = totalInclVAT.toString()
-                    
-                }
-                /*if sender.isOn == false{
-                    totalPriceTextField.text = totalInclVAT.toString()
-                    //totalInclVAT = totalAmountAsDouble!*VATpercentCalc
-                }*/
-                
+
+
+            if sender.isOn == false {
+                totalPriceTextField.text = totalExclVAT.toString()
             }
-            
-           
+            if sender.isOn == true {
+                totalPriceTextField.text = totalInclVAT.toString()
             }
         }
     }
@@ -125,9 +107,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         receiptSwitch .setOn(false, animated: true)
         isPaidSwitch .setOn(false, animated: true)
+
+        // formatting the date to correct output
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.setLocalizedDateFormatFromTemplate("")
+        
+        
+            
+
         
         let isPresentingInAddContactMode = presentingViewController is UINavigationController
         if isPresentingInAddContactMode{
@@ -136,24 +125,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             datePaidLabel.isEnabled = false
             paidSwitchLabel.isEnabled = false
             receiptImage.isHidden = true
-            
         } else{
             isPaidSwitch.isEnabled = true
             paidDate.isEnabled = true
             datePaidLabel.isEnabled = true
             paidSwitchLabel.isEnabled = true
+            //let doesImageExist = record.receiptPhoto as? UIImage
+            if (hasPhotoBeenChosen == false){ //(receiptImage.image != nil) == true{
+                receiptImage.isHidden = true
+            }
+            if (hasPhotoBeenChosen == true){ //(receiptImage != nil) == false{
+                receiptImage.isHidden = false
+            }
+            
+            /*if !receiptSwitch.isOn{
+                receiptImage.isHidden = true
+            } else{
+                receiptImage.isHidden = false
+            }*/
         }
-        
-        // allows the user keyboard to be dismissed when not in use
-        let screenTap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        // prevents the 'dismissal' of keyboard from interfering with or cancelling any other interactions
-        screenTap.cancelsTouchesInView = false
-        // adds a new gesture recogsiser to the view
-        view.addGestureRecognizer(screenTap)
-        
-        // formatting the date to correct output
-        dateFormatter.locale = Locale(identifier: "en_GB")
-        dateFormatter.setLocalizedDateFormatFromTemplate("")
         
         if let record = record{
             expenseTypePicker.selectRow(record.expenseType, inComponent: 0, animated: true)
@@ -166,6 +156,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             vatSwitch.isOn = record.inclVAT ?? true
             isPaidSwitch.isOn = record.isPaid ?? false
             paidDate.date = record.datePaid
+        // allows the user keyboard to be dismissed when not in use
+        let screenTap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        // prevents the 'dismissal' of keyboard from interfering with or cancelling any other interactions
+        screenTap.cancelsTouchesInView = false
+        // adds a new gesture recogsiser to the view
+        view.addGestureRecognizer(screenTap)
+        
+
             
         }
     }
@@ -218,6 +216,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         }
         // show the selected image
         receiptImage.image = selectedImage
+        hasPhotoBeenChosen = true
         dismiss(animated: true, completion: nil)
          
     }

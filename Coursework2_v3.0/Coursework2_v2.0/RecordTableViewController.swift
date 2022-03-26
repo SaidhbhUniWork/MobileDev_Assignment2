@@ -15,11 +15,17 @@ class RecordTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if let savedRecords = loadRecords(){
+            
+        } else {
+            //load default record if necessary
+            // load welcome message?
+        }
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -41,30 +47,35 @@ class RecordTableViewController: UITableViewController {
         // Configure the cell...
         
         cell.textLabel?.text = recordsArray[indexPath.row].expenseTypeString   //expenseType
+        cell.detailTextLabel?.text = "£" + recordsArray[indexPath.row].totalAmount
 
         return cell
     }
     
 
-    /*
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
+    
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
+            // simultaneously delete the record from the array and delete the selected row from the tableView
+            recordsArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            saveRecords()
+
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.
@@ -107,11 +118,29 @@ class RecordTableViewController: UITableViewController {
     
     @IBAction func unwindToRecords(sender:UIStoryboardSegue){
         if let sourceViewController = sender.source as? ViewController, let record = sourceViewController.record{
-            
-            recordsArray.append(record)
-            let newIndexPath = IndexPath(row:recordsArray.count-1, section:0)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            // Check if source was editing or adding
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                recordsArray[selectedIndexPath.row] = record
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                recordsArray.append(record)
+                let newIndexPath = IndexPath(row:recordsArray.count-1, section:0)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)            }
+ 
+        }
+        saveRecords()
+    }
+    
+    //MARK: Private Methods
+    
+    private func saveRecords(){
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(recordsArray, toFile: NewRecord.ArchiveURL.path)
+        if(!isSuccessfulSave){
+            print("Save Failed")
         }
     }
-
+    
+    private func loadRecords() -> [NewRecord]?{
+        return NSKeyedUnarchiver.unarchiveObject(withFile: NewRecord.ArchiveURL.path) as? [NewRecord]
+    }
 }
