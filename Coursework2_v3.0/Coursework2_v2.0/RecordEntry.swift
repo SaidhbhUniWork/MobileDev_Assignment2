@@ -13,6 +13,7 @@ class NewRecord:NSObject, NSCoding{
         coder.encode(expenseType, forKey: PropertyKey.expenseType)
         coder.encode(expenseTypeString, forKey: PropertyKey.expenseTypeString)
         coder.encode(dateAdded, forKey: PropertyKey.dateAdded)
+        coder.encode(dateAddedString, forKey: PropertyKey.dateAddedString)
         coder.encode(dateIncurred, forKey: PropertyKey.dateIncurred)
         coder.encode(datePaid, forKey: PropertyKey.datePaid)
         coder.encode(receiptPhoto, forKey: PropertyKey.receiptPhoto)
@@ -24,19 +25,16 @@ class NewRecord:NSObject, NSCoding{
     }
     
     required convenience init?(coder: NSCoder) {
-        /*guard let empName = coder.decodeObject(forKey: PropertyKey.empName) as? String else{
-            print("Unable to decode")
-            return nil
-        }*/
         guard let expenseTypeString = coder.decodeObject(forKey: PropertyKey.expenseTypeString) as? String else{
             print("Unable to decode")
             return nil
         }
-        guard let expenseType = coder.decodeObject(forKey: PropertyKey.expenseType) as? Int else{
+        
+        guard let dateAdded = coder.decodeObject(forKey: PropertyKey.dateAdded) as? Date else{
             print("Unable to decode")
             return nil
         }
-        guard let dateAdded = coder.decodeObject(forKey: PropertyKey.dateAdded) as? Date else{
+        guard let dateAddedString = coder.decodeObject(forKey: PropertyKey.dateAddedString) as? String else{
             print("Unable to decode")
             return nil
         }
@@ -68,9 +66,14 @@ class NewRecord:NSObject, NSCoding{
             print("Unable to decode")
             return nil
         }
+        /*guard let expenseType = coder.decodeObject(forKey: PropertyKey.expenseType) as? Int else{
+            print("Unable to decode")
+            return nil
+        }*/
+        let expenseType = 0
         let receiptPhoto = coder.decodeObject(forKey: PropertyKey.receiptPhoto) as? UIImage
         
-        self.init(expenseType:expenseType, expenseTypeString:expenseTypeString, dateAdded:dateAdded, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
+        self.init(expenseType:expenseType, expenseTypeString:expenseTypeString, dateAdded:dateAdded, dateAddedString:dateAddedString, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
         
     }
     
@@ -78,6 +81,7 @@ class NewRecord:NSObject, NSCoding{
     var expenseType: Int
     var expenseTypeString: String
     var dateAdded: Date
+    var dateAddedString: String
     var dateIncurred: Date
     var datePaid: Date
     var receiptPhoto: UIImage? // optional
@@ -88,7 +92,7 @@ class NewRecord:NSObject, NSCoding{
     var receiptSwitch: Bool?
     
     //constructor
-    init?(expenseType: Int, expenseTypeString: String, dateAdded: Date, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: String, isPaid: Bool, inclVAT: Bool, receiptSwitch: Bool){
+    init?(expenseType: Int, expenseTypeString: String, dateAdded: Date, dateAddedString: String, dateIncurred: Date, datePaid: Date, receiptPhoto: UIImage?, expenseDetails: String, totalAmount: String, isPaid: Bool, inclVAT: Bool, receiptSwitch: Bool){
         if(expenseDetails.isEmpty || totalAmount.isEmpty){
             return nil
         }
@@ -96,6 +100,7 @@ class NewRecord:NSObject, NSCoding{
         self.expenseType = expenseType
         self.expenseTypeString = expenseTypeString
         self.dateAdded = dateAdded
+        self.dateAddedString = dateAddedString
         self.dateIncurred = dateIncurred
         self.datePaid = datePaid
         self.receiptPhoto = receiptPhoto
@@ -109,6 +114,7 @@ class NewRecord:NSObject, NSCoding{
         static let expenseType = "ExpenseType"
         static let expenseTypeString = "ExpenseTypeString"
         static let dateAdded = "DateAdded"
+        static let dateAddedString = "DateAddedString"
         static let dateIncurred = "DateIncurred"
         static let datePaid = "DatePaid"
         static let receiptPhoto = "ReceiptPhoto"

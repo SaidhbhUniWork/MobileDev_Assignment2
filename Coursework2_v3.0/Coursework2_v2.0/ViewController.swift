@@ -23,9 +23,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     
 
     var record:NewRecord?
-    var hasPhotoBeenChosen: Bool? = false
     var pickerValue: Int?
     let dateFormatter = DateFormatter()
+    let date = Date()
     let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Other"]
     
     //@IBOutlet weak var employeeNameTextField: UITextField!
@@ -56,6 +56,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             }
         }
     }
+    
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         // hides the keyboard from view
         expenseDetailsTextField.resignFirstResponder()
@@ -65,6 +66,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         imagePickerController.delegate = self
         present(imagePickerController, animated: true, completion:nil)
     }
+    
     @IBAction func getPickerValue(_ sender:UIPickerView){
         //let pickerIndex = expenseTypePicker.selectedRow(inComponent: 0)
         //pickerValue = pickerDataSource[pickerIndex]
@@ -73,6 +75,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerDataSource[row]
     }
+    
     @IBAction func recieptSwitchToggleAction(_ sender: UISwitch) {
         if sender.isOn == false{
             receiptImage.isHidden = true
@@ -80,6 +83,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             receiptImage.isHidden = false
         }
     }
+    
     @IBAction func vatSwitchToggleAction(_ sender: UISwitch) {
         
         let isPresentingInAddContactMode = presentingViewController is UINavigationController
@@ -88,7 +92,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         var totalInclVAT = (totalAmountAsDouble ?? 0.0)*VATpercent
         var totalExclVAT = (totalAmountAsDouble ?? 0.0)/VATpercent
         if !isPresentingInAddContactMode{
-
 
             if sender.isOn == false {
                 totalPriceTextField.text = totalExclVAT.toString()
@@ -112,11 +115,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
 
         // formatting the date to correct output
         dateFormatter.locale = Locale(identifier: "en_GB")
-        dateFormatter.setLocalizedDateFormatFromTemplate("")
-        
-        
-            
-
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMMdYYYY")
+        print(dateFormatter.string(from: date))
         
         let isPresentingInAddContactMode = presentingViewController is UINavigationController
         if isPresentingInAddContactMode{
@@ -130,20 +130,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             paidDate.isEnabled = true
             datePaidLabel.isEnabled = true
             paidSwitchLabel.isEnabled = true
-            //let doesImageExist = record.receiptPhoto as? UIImage
-            if (hasPhotoBeenChosen == false){ //(receiptImage.image != nil) == true{
-                receiptImage.isHidden = true
-            }
-            if (hasPhotoBeenChosen == true){ //(receiptImage != nil) == false{
-                receiptImage.isHidden = false
-            }
-            
-            /*if !receiptSwitch.isOn{
-                receiptImage.isHidden = true
-            } else{
-                receiptImage.isHidden = false
-            }*/
         }
+        
+        // allows the user keyboard to be dismissed when not in use
+        let screenTap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        // prevents the 'dismissal' of keyboard from interfering with or cancelling any other interactions
+        screenTap.cancelsTouchesInView = false
+        // adds a new gesture recogsiser to the view
+        view.addGestureRecognizer(screenTap)
         
         if let record = record{
             expenseTypePicker.selectRow(record.expenseType, inComponent: 0, animated: true)
@@ -156,15 +150,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             vatSwitch.isOn = record.inclVAT ?? true
             isPaidSwitch.isOn = record.isPaid ?? false
             paidDate.date = record.datePaid
-        // allows the user keyboard to be dismissed when not in use
-        let screenTap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        // prevents the 'dismissal' of keyboard from interfering with or cancelling any other interactions
-        screenTap.cancelsTouchesInView = false
-        // adds a new gesture recogsiser to the view
-        view.addGestureRecognizer(screenTap)
-        
-
-            
+            if receiptSwitch.isOn == true{
+                receiptImage.isHidden = false
+            }
+            //if (hasPhotoBeenChosen == true){ //(receiptImage != nil) == false{
+            if receiptSwitch.isOn == false{
+                receiptImage.isHidden = true
+            }
         }
     }
     // function is called when a tap gesture is recognised
@@ -181,17 +173,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         let expenseType = expenseTypePicker.selectedRow(inComponent: 0)
         let expenseTypeString = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
         let dateAdded = currentDate.date
+        let dateAddedString = dateFormatter.string(from: date)
         let dateIncurred = expenseDate.date
         let datePaid = paidDate.date
         let receiptPhoto = receiptImage.image
         let expenseDetails = expenseDetailsTextField.text ?? ""
         let totalAmount = totalPriceTextField.text ?? ""
-        //let totalAmount = total_asString.toDouble() ?? 0.0
         let isPaid = isPaidSwitch.isOn
         let inclVAT = vatSwitch.isOn
         let receiptSwitch = receiptSwitch.isOn
                 
-        record = NewRecord(expenseType: expenseType, expenseTypeString: expenseTypeString, dateAdded: dateAdded, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
+        record = NewRecord(expenseType: expenseType, expenseTypeString: expenseTypeString, dateAdded: dateAdded, dateAddedString: dateAddedString, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
     }
     
     // UIPicker Datasource functions
@@ -216,7 +208,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         }
         // show the selected image
         receiptImage.image = selectedImage
-        hasPhotoBeenChosen = true
         dismiss(animated: true, completion: nil)
          
     }

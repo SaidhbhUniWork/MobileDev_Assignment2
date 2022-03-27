@@ -47,8 +47,9 @@ class RecordTableViewController: UITableViewController {
         // Configure the cell...
         
         cell.textLabel?.text = recordsArray[indexPath.row].expenseTypeString   //expenseType
-        cell.detailTextLabel?.text = "£" + recordsArray[indexPath.row].totalAmount
-
+        //cell.detailTextLabel?.text = "£" + recordsArray[indexPath.row].totalAmount
+        cell.detailTextLabel?.text = recordsArray[indexPath.row].dateAddedString
+        
         return cell
     }
     
