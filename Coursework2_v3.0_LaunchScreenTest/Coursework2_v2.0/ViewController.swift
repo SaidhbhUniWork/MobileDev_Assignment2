@@ -163,37 +163,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    // MARK: - FIX THIS
+
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
-
-        if (expenseDetailsTextField.text == "" || totalPriceTextField.text == ""){
-            let alertController = UIAlertController(title:  "Empty Fields", message: "Cannot save record: Empty data fields", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alertController, animated: true, completion: nil)
-        }
+        guard let button =  sender as? UIBarButtonItem, button === saveButton
         else{
-            guard let button =  sender as? UIBarButtonItem, button === saveButton
-            else{
-                return;
-            }
-            let expenseType = expenseTypePicker.selectedRow(inComponent: 0)
-            let expenseTypeString = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
-            let dateAdded = currentDate.date
-            let dateIncurred = expenseDate.date
-            
-            let dateAddedString = dateFormatter.string(from: expenseDate.date)
-            let datePaid = paidDate.date
-            let receiptPhoto = receiptImage.image
-            let expenseDetails = expenseDetailsTextField.text ?? ""
-            let totalAmount = totalPriceTextField.text ?? ""
-            let isPaid = isPaidSwitch.isOn
-            let inclVAT = vatSwitch.isOn
-            let receiptSwitch = receiptSwitch.isOn
-                    
-            record = NewRecord(expenseType: expenseType, expenseTypeString: expenseTypeString, dateAdded: dateAdded, dateAddedString: dateAddedString, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
-            
+            return;
         }
-
+        
+        let expenseType = expenseTypePicker.selectedRow(inComponent: 0)
+        let expenseTypeString = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
+        let dateAdded = currentDate.date
+        let dateIncurred = expenseDate.date
+        
+        let dateAddedString = dateFormatter.string(from: expenseDate.date)
+        let datePaid = paidDate.date
+        let receiptPhoto = receiptImage.image
+        let expenseDetails = expenseDetailsTextField.text ?? ""
+        let totalAmount = totalPriceTextField.text ?? ""
+        let isPaid = isPaidSwitch.isOn
+        let inclVAT = vatSwitch.isOn
+        let receiptSwitch = receiptSwitch.isOn
+                
+        record = NewRecord(expenseType: expenseType, expenseTypeString: expenseTypeString, dateAdded: dateAdded, dateAddedString: dateAddedString, dateIncurred: dateIncurred, datePaid: datePaid, receiptPhoto: receiptPhoto, expenseDetails: expenseDetails, totalAmount: totalAmount, isPaid: isPaid, inclVAT: inclVAT, receiptSwitch: receiptSwitch)
     }
     
     // UIPicker Datasource functions

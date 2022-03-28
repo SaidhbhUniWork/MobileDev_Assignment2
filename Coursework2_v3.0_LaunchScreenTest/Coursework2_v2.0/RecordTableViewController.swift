@@ -35,7 +35,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
     
-    // MARK: - Delete this func?
     @IBAction func showAlert(){
         let alertController = UIAlertController(title: "Welcome to EXPENSIFY", message: "App Loading...", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
