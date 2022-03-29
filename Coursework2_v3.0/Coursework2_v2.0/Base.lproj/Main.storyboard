@@ -16,17 +16,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="6vD-9F-v8L">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" showsScopeBar="YES" id="6vD-9F-v8L">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="51"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
+                            <scopeButtonTitles>
+                                <string>All</string>
+                                <string>Paid</string>
+                                <string>Unpaid</string>
+                            </scopeButtonTitles>
                             <connections>
                                 <outlet property="delegate" destination="wZF-Zq-1rU" id="Fci-bD-hdF"/>
                             </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="blue" indentationWidth="10" reuseIdentifier="RecordCell" textLabel="Khj-3F-VYG" detailTextLabel="gal-12-Aa8" style="IBUITableViewCellStyleValue1" id="bN6-00-Ros">
-                                <rect key="frame" x="0.0" y="68.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="75.5" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bN6-00-Ros" id="YIz-0A-UwY">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>

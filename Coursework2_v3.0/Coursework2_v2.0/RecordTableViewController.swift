@@ -10,24 +10,32 @@ import UIKit
 class RecordTableViewController: UITableViewController, UISearchBarDelegate {
 
     
-    var recordsArray:[NewRecord] = []
-    var filteredRecords:[NewRecord] = []
-    
+    var recordsArray:[NewRecord] = []       // original unfiltered array of saved records
+    var filteredRecords:[NewRecord] = []    // structure to save filtered records
+    var dateToday = Date()
+    let dateFormatter = DateFormatter()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if let savedRecords = loadRecords(){
-            
-            let alertController = UIAlertController(title: "Welcome to EXPENSIFY", message: "App Loading...", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alertController, animated: true, completion: nil)
+        
+        let alertController = UIAlertController(title: "Welcome to EXPENSIFY", message: "App Loading...", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alertController, animated: true, completion: nil)
+        
+        if let savedRecords = loadRecords()
+        {
+            //print(savedRecords?.count ?? 0)
             
             recordsArray = savedRecords
         } else {
-            //load default record if necessary
-            // load welcome message?
-            //showAlert()
-        }
+            // load default record if necessary
+
+            if let initRecord = NewRecord.init(expenseType: 0, expenseTypeString: "Petrol", dateAdded: dateToday, dateAddedString: "01 Apr 2022", dateIncurred: dateToday, datePaid: dateToday, receiptPhoto: nil, expenseDetails: "Expense", totalAmount: "100", isPaid: false, inclVAT: true, receiptSwitch: false){
+                recordsArray.append(initRecord)
+            }
+         }
+        // create an exact copy of all saved records
+        filteredRecords = recordsArray
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -35,13 +43,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         self.navigationItem.leftBarButtonItem = self.editButtonItem
     }
     
-    // MARK: - Delete this func?
-    @IBAction func showAlert(){
-        let alertController = UIAlertController(title: "Welcome to EXPENSIFY", message: "App Loading...", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default))
-        self.present(alertController, animated: true, completion: nil)
-    }
-
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -51,7 +53,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return recordsArray.count
+        return filteredRecords.count
     }
 
     
@@ -60,14 +62,11 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
 
         // Configure the cell...
         
-        cell.textLabel?.text = recordsArray[indexPath.row].expenseTypeString   //expenseType
-        //cell.detailTextLabel?.text = "£" + recordsArray[indexPath.row].totalAmount
-        cell.detailTextLabel?.text = recordsArray[indexPath.row].dateAddedString
+        cell.textLabel?.text = filteredRecords[indexPath.row].expenseTypeString
+        cell.detailTextLabel?.text = filteredRecords[indexPath.row].dateAddedString
         
         return cell
     }
-    
-
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -75,14 +74,21 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         return true
     }
     
-
-    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
             // simultaneously delete the record from the array and delete the selected row from the tableView
-            recordsArray.remove(at: indexPath.row)
+            let record = filteredRecords[indexPath.row]
+            filteredRecords.remove(at: indexPath.row)
+            
+            for index in indexPath.row ..< recordsArray.count {
+                if (recordsArray[index].expenseTypeString == record.expenseTypeString && recordsArray[index].dateAddedString == record.dateAddedString){
+                    recordsArray.remove(at: index)
+                    break;
+                }
+            }
+            
             tableView.deleteRows(at: [indexPath], with: .fade)
             saveRecords()
 
@@ -90,7 +96,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    
 
     /*
     // Override to support rearranging the table view.
@@ -122,7 +127,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
                 guard let indexPath = tableView.indexPathForSelectedRow else{
                     break;
                 }
-                let selectedRecord = recordsArray[indexPath.row]
+                let selectedRecord = filteredRecords[indexPath.row]
                 recordViewController.record = selectedRecord
                 break
             default:
@@ -135,11 +140,19 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         if let sourceViewController = sender.source as? ViewController, let record = sourceViewController.record{
             // Check if source was editing or adding
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                recordsArray[selectedIndexPath.row] = record
+                filteredRecords[selectedIndexPath.row] = record
+                let originalRecord = filteredRecords[selectedIndexPath.row]
+                for index in selectedIndexPath.row ..< recordsArray.count{
+                    if(recordsArray[index].expenseTypeString == originalRecord.expenseTypeString && recordsArray[index].dateAddedString == originalRecord.dateAddedString){
+                        recordsArray[index] = record
+                    }
+                }
+                
                 tableView.reloadRows(at: [selectedIndexPath], with: .none)
             } else {
+                filteredRecords.append(record)
                 recordsArray.append(record)
-                let newIndexPath = IndexPath(row:recordsArray.count-1, section:0)
+                let newIndexPath = IndexPath(row:filteredRecords.count-1, section:0)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)            }
  
         }
@@ -147,7 +160,28 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("you typed \(searchText)")
+        if (searchText.isEmpty){
+            filteredRecords = recordsArray
+        } else{
+            filteredRecords = recordsArray.filter({record -> Bool in return record.expenseTypeString.lowercased().contains(searchText.lowercased())})
+        }
+        tableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        //let selectedScopeButtonText = searchBar.scopeButtonTitles![selectedScope]
+        
+        if selectedScope == 0{
+            filteredRecords = recordsArray
+
+        }
+        if selectedScope == 1{
+            filteredRecords = recordsArray.filter({record -> Bool in return record.isPaid == true})
+        }
+        if selectedScope == 2{
+            filteredRecords = recordsArray.filter({record -> Bool in return record.isPaid == false})
+        }
+        tableView.reloadData()
     }
     
     //MARK: Private Methods
