@@ -230,6 +230,9 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7zO-c2-mqZ">
                                 <rect key="frame" x="341" y="809" width="51" height="31"/>
+                                <connections>
+                                    <action selector="isPaidSwitchToggleAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="A6Y-AS-Z3j"/>
+                                </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Paid" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SaC-fn-m46">
                                 <rect key="frame" x="20" y="812" width="76" height="21"/>

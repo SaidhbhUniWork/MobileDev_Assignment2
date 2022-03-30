@@ -27,7 +27,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     let dateFormatter = DateFormatter()
     var date = Date()
     let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Postage", "Other"]
-    
+        
     @IBOutlet weak var expenseTypePicker: UIPickerView!
     @IBOutlet weak var currentDate: UIDatePicker!
     @IBOutlet weak var expenseDate: UIDatePicker!
@@ -100,12 +100,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             }
         }
     }
-    
-    /*func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        
-        //pickerValue = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
-        //pickerValue = expenseTypePicker.selectedRow(inComponent: 0)
-    }*/
+    @IBAction func isPaidSwitchToggleAction(_ sender: UISwitch) {
+        let isPresentingInAddContactMode = presentingViewController is UINavigationController
+        if !isPresentingInAddContactMode{
+            if sender.isOn == true{
+                isPaidSwitch.isOn = true
+                
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,7 +143,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         
         if let record = record{
             
-            expenseTypePicker.selectRow(record.expenseType, inComponent: 0, animated: true)
+            expenseTypePicker.selectRow(pickerValue ?? 0, inComponent: 0, animated: true)
             currentDate.date = record.dateAdded
             expenseDate.date = record.dateIncurred
             receiptSwitch.isOn = record.receiptSwitch ?? false
@@ -148,7 +151,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             expenseDetailsTextField.text = record.expenseDetails
             totalPriceTextField.text = record.totalAmount
             vatSwitch.isOn = record.inclVAT ?? true
-            isPaidSwitch.isOn = record.isPaid ?? false
+            isPaidSwitch.isOn = record.isPaid!
             paidDate.date = record.datePaid
             if receiptSwitch.isOn == true{
                 receiptImage.isHidden = false
@@ -193,6 +196,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerDataSource.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        pickerValue = expenseTypePicker.selectedRow(inComponent: 0)
+        //pickerValue = pickerDataSource[expenseTypePicker.selectedRow(inComponent: 0)]
+        //pickerValue = expenseTypePicker.selectedRow(inComponent: 0)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

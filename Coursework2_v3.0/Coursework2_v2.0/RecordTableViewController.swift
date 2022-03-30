@@ -24,8 +24,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         
         if let savedRecords = loadRecords()
         {
-            //print(savedRecords?.count ?? 0)
-            
             recordsArray = savedRecords
         } else {
             // load default record if necessary
@@ -34,6 +32,9 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
                 recordsArray.append(initRecord)
             }
          }
+        
+        recordsArray.sort(by: {$0.dateAddedString < $1.dateAddedString})
+        
         // create an exact copy of all saved records
         filteredRecords = recordsArray
         // Uncomment the following line to preserve selection between presentations

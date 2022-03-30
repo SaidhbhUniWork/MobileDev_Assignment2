@@ -72,7 +72,7 @@ class NewRecord:NSObject, NSCoding{
             print("Unable to decode")
             return nil
         }*/
-        let expenseType = coder.decodeObject(forKey: PropertyKey.expenseType) as? Int
+        let expenseType = (coder.decodeObject(forKey: PropertyKey.expenseType) as? Int)
         let receiptPhoto = coder.decodeObject(forKey: PropertyKey.receiptPhoto) as? UIImage
         
         self.init(expenseType:expenseType ?? 0, expenseTypeString:expenseTypeString, dateAdded:dateAdded, dateAddedString:dateAddedString, dateIncurred:dateIncurred, datePaid:datePaid, receiptPhoto:receiptPhoto, expenseDetails:expenseDetails, totalAmount:totalAmount, isPaid:isPaid, inclVAT:inclVAT, receiptSwitch:receiptSwitch)
