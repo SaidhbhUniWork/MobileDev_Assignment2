@@ -71,10 +71,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         //pickerValue = pickerDataSource[pickerIndex]
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerDataSource[row]
-    }
     
+    
+    //MARK: - Toggle Switch Actions
     @IBAction func recieptSwitchToggleAction(_ sender: UISwitch) {
         if sender.isOn == false{
             receiptImage.isHidden = true
@@ -110,6 +109,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         }
     }
     
+    //MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         receiptSwitch .setOn(false, animated: true)
@@ -118,7 +118,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         // formatting the date to correct output
         dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.setLocalizedDateFormatFromTemplate("MMMdYYYY")
-        print(dateFormatter.string(from: date))
         
         let isPresentingInAddContactMode = presentingViewController is UINavigationController
         if isPresentingInAddContactMode{
@@ -143,7 +142,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         
         if let record = record{
             
-            expenseTypePicker.selectRow(pickerValue ?? 0, inComponent: 0, animated: true)
+            expenseTypePicker.selectRow(record.expenseType, inComponent: 0, animated: true)
             currentDate.date = record.dateAdded
             expenseDate.date = record.dateIncurred
             receiptSwitch.isOn = record.receiptSwitch ?? false
@@ -166,7 +165,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    // MARK: - FIX THIS
+    // MARK: - Prepare for Segue
     override func prepare(for segue:UIStoryboardSegue, sender: Any?){
 
         guard let button =  sender as? UIBarButtonItem, button === saveButton
@@ -194,6 +193,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         return 1
     }
     
+    //MARK: - PickerView
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerDataSource.count
     }
@@ -204,6 +204,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         //pickerValue = expenseTypePicker.selectedRow(inComponent: 0)
     }
     
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return pickerDataSource[row]
+    }
+    
+    //MARK: - ImagePicker
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }

@@ -7,8 +7,9 @@
 
 import UIKit
 
-class RecordTableViewController: UITableViewController, UISearchBarDelegate {
 
+
+class RecordTableViewController: UITableViewController, UISearchBarDelegate {
     
     var recordsArray:[NewRecord] = []       // original unfiltered array of saved records
     var filteredRecords:[NewRecord] = []    // structure to save filtered records
@@ -33,7 +34,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
             }
          }
         
-        recordsArray.sort(by: {$0.dateAddedString < $1.dateAddedString})
+        recordsArray.sort(by: {$0.dateIncurred < $1.dateIncurred})
         
         // create an exact copy of all saved records
         filteredRecords = recordsArray
@@ -97,6 +98,22 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
+    
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let paidAction = UIContextualAction(style: .normal, title: "Paid") {[weak self] (action, view, completionHandler) in
+            self?.markAsPaidSwipeRight(indexPath: indexPath)
+            completionHandler(true)
+        }
+        paidAction.backgroundColor = .green
+        return UISwipeActionsConfiguration(actions: [paidAction])
+    }
+    private func markAsPaidSwipeRight(indexPath: IndexPath){
+        let record = filteredRecords[indexPath.row]
+        record.isPaid = true
+        saveRecords()
+    }
 
     /*
     // Override to support rearranging the table view.
@@ -141,8 +158,8 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         if let sourceViewController = sender.source as? ViewController, let record = sourceViewController.record{
             // Check if source was editing or adding
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
-                filteredRecords[selectedIndexPath.row] = record
                 let originalRecord = filteredRecords[selectedIndexPath.row]
+                filteredRecords[selectedIndexPath.row] = record
                 for index in selectedIndexPath.row ..< recordsArray.count{
                     if(recordsArray[index].expenseTypeString == originalRecord.expenseTypeString && recordsArray[index].dateAddedString == originalRecord.dateAddedString){
                         recordsArray[index] = record
@@ -153,8 +170,12 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
             } else {
                 filteredRecords.append(record)
                 recordsArray.append(record)
+
                 let newIndexPath = IndexPath(row:filteredRecords.count-1, section:0)
-                tableView.insertRows(at: [newIndexPath], with: .automatic)            }
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+                recordsArray.sort(by: {$0.dateIncurred < $1.dateIncurred})
+                
+            }
  
         }
         saveRecords()
@@ -184,7 +205,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         }
         tableView.reloadData()
     }
-    
+  
     //MARK: Private Methods
     
     private func saveRecords(){
@@ -197,4 +218,5 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
     private func loadRecords() -> [NewRecord]?{
         return NSKeyedUnarchiver.unarchiveObject(withFile: NewRecord.ArchiveURL.path) as? [NewRecord]
     }
+    
 }
