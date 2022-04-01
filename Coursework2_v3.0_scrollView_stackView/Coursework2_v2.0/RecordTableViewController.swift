@@ -184,27 +184,61 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         }
         saveRecords()
     }
+    
+    var scopeChanged: Bool = false
+    
+    
     //MARK: - Search Bar methods
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if (searchText.isEmpty){
-            filteredRecords = recordsArray
-        } else{
-            filteredRecords = recordsArray.filter({record -> Bool in return record.expenseTypeString.lowercased().contains(searchText.lowercased())})
+        if scopeChanged == true{
+            searchBar.isHidden = true
+        } else {
+            if (searchText.isEmpty){
+                filteredRecords = recordsArray
+            } else{
+                // first check if searchText is contained in the expenseTypeString value (LHS of table cell)
+                filteredRecords = recordsArray.filter({record -> Bool in return record.expenseTypeString.lowercased().contains(searchText.lowercased())})
+                // if searchText is not found, filteredRecords is empty, so next search dateAdded for searchText
+                if filteredRecords.isEmpty{
+                    filteredRecords = recordsArray.filter({record -> Bool in return record.dateAddedString.lowercased().contains(searchText.lowercased())})
+                }
+            }
+            
         }
+
         tableView.reloadData()
     }
+    //MARK: - Array Function FIX THIS?
+    /*func scopeChange() -> [NewRecord] {
+        if scopeChanged == 0{
+            //scopeChanged = 0
+            return recordsArray
+        }
+        if scopeChanged == 1{
+            //scopeChanged = 1
+            return recordsArray.filter({record -> Bool in return record.isPaid == true})
+        }
+        if scopeChanged == 2{
+            //scopeChanged = 2
+            return recordsArray.filter({record -> Bool in return record.isPaid == false})
+        }
+    }*/
+    
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         //let selectedScopeButtonText = searchBar.scopeButtonTitles![selectedScope]
         
         if selectedScope == 0{
+            scopeChanged = false
             filteredRecords = recordsArray
 
         }
         if selectedScope == 1{
+            scopeChanged = true
             filteredRecords = recordsArray.filter({record -> Bool in return record.isPaid == true})
         }
         if selectedScope == 2{
+            scopeChanged = true
             filteredRecords = recordsArray.filter({record -> Bool in return record.isPaid == false})
         }
         tableView.reloadData()
