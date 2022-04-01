@@ -18,7 +18,7 @@ extension Double{
     }
 }
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     
 
@@ -115,6 +115,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
         currentDate.isEnabled = false
         receiptSwitch .setOn(false, animated: true)
         isPaidSwitch .setOn(false, animated: true)
+        // delegate numeric textfield so the UITextField function to restrict input
+        // to numbers and a single decimal point
+        totalPriceTextField.delegate = self
 
         // formatting the date to correct output
         dateFormatter.locale = Locale(identifier: "en_GB")
@@ -156,7 +159,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
             if receiptSwitch.isOn == true{
                 receiptImage.isHidden = false
             }
-            //if (hasPhotoBeenChosen == true){ //(receiptImage != nil) == false{
             if receiptSwitch.isOn == false{
                 receiptImage.isHidden = true
             }
@@ -208,6 +210,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate & UINavi
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerDataSource[row]
     }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool{
+        let validNumberChars = NSCharacterSet(charactersIn: "0123456789").inverted
+        let components = string.components(separatedBy: validNumberChars)
+        let filtered = components.joined(separator: "")
+        
+        if filtered == string {
+           return true
+        } else {
+            if string == "." {
+                let numDots = textField.text!.components(separatedBy: ".").count-1
+                if numDots == 0 {
+                    return true
+                } else {
+                    if numDots > 0 && string == "." {
+                        return false
+                    } else {
+                        return true
+                    }
+                }
+            } else {
+                return false
+            }
+        }
+     }
     
     //MARK: - ImagePicker
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

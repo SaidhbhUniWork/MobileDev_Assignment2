@@ -15,21 +15,29 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
     var filteredRecords:[NewRecord] = []    // structure to save filtered records
     var dateToday = Date()
     let dateFormatter = DateFormatter()
+    
 
+    //MARK: - View Did Load
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let alertController = UIAlertController(title: "Welcome to EXPENSIFY", message: "App Loading...", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default))
         self.present(alertController, animated: true, completion: nil)
-        
-        if let savedRecords = loadRecords()
+      
+        dateFormatter.locale = Locale(identifier: "en_GB")
+        dateFormatter.setLocalizedDateFormatFromTemplate("MMMdYYYY")
+       
+        //if let savedRecords = loadRecords()
+        let savedRecords = loadRecords()
+        if savedRecords!.count != 0
         {
-            recordsArray = savedRecords
+            recordsArray = savedRecords!
         } else {
             // load default record if necessary
-
-            if let initRecord = NewRecord.init(expenseType: 0, expenseTypeString: "Petrol", dateAdded: dateToday, dateAddedString: "01 Apr 2022", dateIncurred: dateToday, datePaid: dateToday, receiptPhoto: nil, expenseDetails: "Expense", totalAmount: "100", isPaid: false, inclVAT: true, receiptSwitch: false){
+            // "1999-01-01 00:00:00"
+            // dateFormatter.string(from: "1999-01-01 00:00:00")
+            if let initRecord = NewRecord.init(expenseType: 0, expenseTypeString: "Default", dateAdded: dateToday, dateAddedString: dateFormatter.string(from: dateToday), dateIncurred: dateToday, datePaid: dateToday, receiptPhoto: nil, expenseDetails: "Default Expense", totalAmount: "100", isPaid: false, inclVAT: true, receiptSwitch: false){
                 recordsArray.append(initRecord)
             }
          }
@@ -42,7 +50,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         filteredRecords = recordsArray
         
         //Uncomment the following line to preserve selection between presentations
-        self.clearsSelectionOnViewWillAppear = false
+        //self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         self.navigationItem.leftBarButtonItem = self.editButtonItem
@@ -112,6 +120,7 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         paidAction.backgroundColor = .green
         return UISwipeActionsConfiguration(actions: [paidAction])
     }
+    
     private func markAsPaidSwipeRight(indexPath: IndexPath){
         let record = filteredRecords[indexPath.row]
         record.isPaid = true
@@ -179,7 +188,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
                 filteredRecords.sort(by: {$0.dateIncurred < $1.dateIncurred})
                 recordsArray.sort(by: {$0.dateIncurred < $1.dateIncurred})
                 tableView.reloadData()
-                //MARK: - RELOAD
             }
         }
         saveRecords()
@@ -205,7 +213,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
             }
             
         }
-
         tableView.reloadData()
     }
     //MARK: - Array Function FIX THIS?
@@ -231,7 +238,6 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         if selectedScope == 0{
             scopeChanged = false
             filteredRecords = recordsArray
-
         }
         if selectedScope == 1{
             scopeChanged = true
