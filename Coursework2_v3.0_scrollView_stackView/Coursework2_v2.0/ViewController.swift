@@ -28,6 +28,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     var date = Date()
     let pickerDataSource = ["Petrol", "Stationary", "Food", "Travel", "Postage", "Other"]
         
+    @IBOutlet weak var addExpenseHeader: UILabel!
     @IBOutlet weak var expenseTypePicker: UIPickerView!
     @IBOutlet weak var currentDate: UIDatePicker!
     @IBOutlet weak var expenseDate: UIDatePicker!
@@ -131,6 +132,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
             paidSwitchLabel.isEnabled = false
             receiptImage.isHidden = true
         } else{
+            addExpenseHeader.text = dateFormatter.string(from: expenseDate.date)
             isPaidSwitch.isEnabled = true
             paidDate.isEnabled = true
             datePaidLabel.isEnabled = true

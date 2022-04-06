@@ -28,11 +28,9 @@ class RecordTableViewController: UITableViewController, UISearchBarDelegate {
         dateFormatter.locale = Locale(identifier: "en_GB")
         dateFormatter.setLocalizedDateFormatFromTemplate("MMMdYYYY")
        
-        //if let savedRecords = loadRecords()
-        let savedRecords = loadRecords()
-        if savedRecords!.count != 0
-        {
-            recordsArray = savedRecords!
+        //let savedRecords = loadRecords()
+        if let savedRecords = loadRecords(){
+            recordsArray = savedRecords
         } else {
             // load default record if necessary
             // "1999-01-01 00:00:00"

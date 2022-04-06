@@ -360,6 +360,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addExpenseHeader" destination="fvB-vZ-RsK" id="Ctj-5k-PmV"/>
                         <outlet property="currentDate" destination="VBq-S0-zcH" id="sxG-7y-YOQ"/>
                         <outlet property="datePaidLabel" destination="SaC-fn-m46" id="OoP-jQ-vZs"/>
                         <outlet property="expenseDate" destination="5WB-1g-KaD" id="QnS-u7-h5U"/>
